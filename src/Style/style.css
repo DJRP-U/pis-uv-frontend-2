@@ -1,0 +1,33 @@
+.pantalla_completa {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #c7c2c2; /* Ejemplo de color de fondo */
+  color: #333; /* Ejemplo de color de texto */
+  /* Otros estilos según sea necesario */
+}
+
+
+
+.izquierda {
+  float: left;
+  width: 30%; /* O ajusta el porcentaje que desees */
+  box-sizing: border-box; /* Evita que los bordes y el relleno afecten el ancho total */
+  /* Otros estilos según sea necesario */
+}
+
+.derecha {
+  float: right;
+  width: 70%; /* Ajusta el porcentaje que desees */
+  box-sizing: border-box; /* Evita que los bordes y el relleno afecten el ancho total */
+  /* Otros estilos según sea necesario */
+}
+
+
+.imagen-responsiva {
+  width: 100%;   /* La imagen ocupa el 100% del ancho del contenedor */
+  height: auto;  /* La altura se ajusta automáticamente para mantener la proporción original */
+  display: block;  /* Asegura que la imagen no tenga márgenes externos o espacios adicionales */
+}
