@@ -51,9 +51,42 @@ function Formulario() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Aquí puedes enviar los datos a la API o realizar otras operaciones
+    e.preventDefault();
+
+    try {
+      const formattedDate = datos.fechaNacimiento.toISOString().split('T')[0];
+      console.log(formattedDate);
+      const response = await fetch('http://127.0.0.1:3006/api/solicitudes/crear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nombres: datos.nombres,
+          apellidos: datos.apellidos,
+          correo: datos.correo,
+          contrasenia: datos.contrasena,
+          telefono: datos.telefono,
+          fecha_nacimiento: formattedDate,
+          ocupacion: datos.ocupacion,
+          organizacion: datos.organizacion,
+          direccion: datos.direccion,
+          estadp: 'ESPERA'
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al enviar el formulario');
+      }
+      
+      console.log('Formulario enviado correctamente');
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error.message);
+    }
+  
     console.log(datos);
   };
 
@@ -125,7 +158,7 @@ function Formulario() {
             id="fechaNacimiento"
             selected={datos.fechaNacimiento}
             onChange={handleFechaNacimientoChange}
-            dateFormat="dd/MM/yyyy"
+            dateFormat="yyyy-MM-dd"
             required
           />
         </div>

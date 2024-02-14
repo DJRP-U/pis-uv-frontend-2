@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Style/style.css';
 import { Link } from 'react-router-dom';
-import Mapa from './Mapa/Mapa';
+import MapaComponent from './Mapa/Mapa'; // Changed import name to match the updated MapaComponent
 
 function ListarDispositivos() {
     const [dispositivos, setDispositivos] = useState([]);
@@ -10,12 +10,12 @@ function ListarDispositivos() {
     useEffect(() => {
         const cargarDispositivos = async () => {
             try {
-                const response = await fetch('https://computacion.unl.edu.ec/uv/api/listar');
+                const response = await fetch('http://localhost:3006/api/listarDips'); // Updated API endpoint
                 if (!response.ok) {
                     throw new Error('Error al obtener los dispositivos');
                 }
                 const data = await response.json();
-                setDispositivos(data.dispositivos);
+                setDispositivos(data.info); // Accessing data.info instead of data.dispositivos
             } catch (error) {
                 console.error(error);
             }
@@ -59,7 +59,7 @@ function ListarDispositivos() {
             </div>
             <div className='container-fluid d-flex justify-content-center align-items-center h-100'>
                 <div className='col-8 d-flex flex-column h-100'>
-                    <Mapa />
+                    <MapaComponent /> {/* Changed component name to match the updated MapaComponent */}
                 </div>
             </div>
         </div>

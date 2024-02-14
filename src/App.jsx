@@ -17,6 +17,7 @@ import TablaDatosHistorico from './componets/TablaDatosHistorico'
 import DatosHistoricos from './componets/DatosHistoricos'
 import Formulario from './componets/Formulario'
 import Persona from './componets/Persona'
+import Solicitud from './componets/solicitud'
 function App() {
   const Middeware = ({ children }) => {
     const autenticado = estaSesion();
@@ -45,6 +46,7 @@ function App() {
         <Route path='/' element={<Inicio/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/persona' element={<MiddewareSesion><Persona show={false} /></MiddewareSesion>}/>
+        <Route path='/solicitud' element={<Solicitud show={false} />}/>
         <Route path='/dispositivolista' element={<ListarDisositivos/>}/>
         <Route path='/dispositivo' element={<GestionarDisositivos/>}/>
         <Route path='/menu' element={<Menu/>}/>
