@@ -9,12 +9,12 @@ function MapaComponent() {
     useEffect(() => {
         const cargarDispositivos = async () => {
             try {
-                const response = await fetch('https://computacion.unl.edu.ec/uv/api/listar');
+                const response = await fetch('http://localhost:3006/api/listarDips');
                 if (!response.ok) {
                     throw new Error('Error al obtener los dispositivos');
                 }
                 const data = await response.json();
-                setPointsWithDescriptions(data.dispositivos.map(dispositivo => ({
+                setPointsWithDescriptions(data.info.map(dispositivo => ({
                     position: [dispositivo.latitud, dispositivo.longitud],
                     nombre: dispositivo.nombre,
                 })));
