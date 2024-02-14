@@ -52,7 +52,7 @@ const Persona = () => {
                     console.error('Error al buscar persona:', error);
                 });
         } else {
-            fetch('http://localhost:8095/api/v1/personas')
+            fetch('http://localhost:3006/api/personas')
                 .then(response => response.json())
                 .then(data => {
                     setPersonas(data.data || []);

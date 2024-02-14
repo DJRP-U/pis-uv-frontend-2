@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Row, Col, Form } from 'react-bootstrap';
-import { toggleCuenta } from '../hooks/Conexion';
+import { AprobarSolicitud, toggleCuenta } from '../hooks/Conexion';
 import AgregarUsuarioModal from './AgragarUsuarioModal';
 import EditarUsuarioModal from './EditarUsuarioModal';
 
+
 import PropTypes from 'prop-types'; // Importa PropTypes
+import mensajes from '../utilidades/Mensajes';
+
 
 const Solicitud = () => {
     const [solicitudes, setSolicitudes] = useState([]);
@@ -21,6 +24,7 @@ const Solicitud = () => {
             })
             .catch(error => {
                 console.error('Error al obtener solicitudes:', error);
+                
             });
     }, []);
 
@@ -60,7 +64,7 @@ const Solicitud = () => {
                     setSolicitudes(data.info || []);
                 })
                 .catch(error => {
-                    console.error('Error al obtener solicitudes:', error);
+                    console.error('Error al obtener solicitudes:', error)
                 });
         }
     };
@@ -70,7 +74,7 @@ const Solicitud = () => {
             external_id: solicitud.external_id
         };
         console.log(data);
-        toggleCuenta(data);
+        AprobarSolicitud(data);
     };
 
     return (
@@ -128,7 +132,8 @@ const SolicitudTable = ({ solicitudes, onEdit, handleToggle }) => {
                                 <th>Ocupación</th>
                                 <th>Organización</th>
                                 <th>Dirección</th>
-                                <th>Estado</th>
+                                <th>External_id</th>
+                                <th>Estado</th>         
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -143,6 +148,7 @@ const SolicitudTable = ({ solicitudes, onEdit, handleToggle }) => {
                                     <td>{solicitud.ocupacion}</td>
                                     <td>{solicitud.organizacion}</td>
                                     <td>{solicitud.direccion}</td>
+                                    <td>{solicitud.external_id}</td>
                                     <td>{solicitud.ESTADO}</td>
                                     <td>
                                         <Button variant={solicitud.ESTADO === 'ESPERA' ? "danger" : "success"} onClick={() => handleToggle(solicitud)}>
