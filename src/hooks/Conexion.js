@@ -252,13 +252,14 @@ export const ModificarPersona = async (data, key) => {
         "Content-Type": "application/json",
         "X-API-TOKEN": key        
     };
-    const datos = await (await fetch(URL + "/persona/modificar", {
+    const datos = await (await fetch(URL + "/personas/modificar", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(data)
     })).json();
     return datos;
 }
+
 export const ObtenerMateria = async (data, key) => {
     const cabeceras = {
         "X-API-TOKEN": key        

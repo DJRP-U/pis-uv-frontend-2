@@ -1,31 +1,31 @@
-import  { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-
-const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
+import { useNavigate } from 'react-router';
+import mensajes from '../utilidades/Mensajes';
+const EditarUsuarioModal = ({ show, handleClose, usuario }) => {
   const [datosUsuario, setDatosUsuario] = useState({
+    external_id: '', // Agrega el campo external_id al estado
+    nombres: '',
     apellidos: '',
     direccion: '',
     fecha_nacimiento: '',
-    ocupacion: '',
-    organizacion: '',
-    correo: '',
-    clave: ''
+    telefono: ''
   });
-
-  const roles = ['Docente', 'Administrativo', 'Estudiante', 'Brigadista'];
-  const [error, setError] = useState('');
+  //const navegation = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8095/api/v1/personas/obtener/identificacion/${identificacion}`)
-      .then(response => response.json())
-      .then(data => {
-        setDatosUsuario(data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener datos del usuario:', error);
+    if (usuario) {
+      setDatosUsuario({
+        external_id: usuario.external_id || '', // Establece external_id del usuario si está presente
+        nombres: usuario.nombres || '',
+        apellidos: usuario.apellidos || '',
+        direccion: usuario.direccion || '',
+        fecha_nacimiento: usuario.fecha_nacimiento || '',
+        telefono: usuario.telefono || ''
       });
-  }, [identificacion]);
+    }
+  }, [usuario]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -38,40 +38,33 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3006/api/v1/personas/editar/${datosUsuario.External}`, {
+      // Obtener el external_id del usuario si está disponible
+      const external_id = usuario ? usuario.external_id : '';
+  
+      const response = await fetch('http://localhost:3006/api/personas/modificar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          tipo_persona: datosUsuario.Rol,
-          cuenta: {
-            correo: datosUsuario.correo,
-            clave: datosUsuario.clave,
-          },
-          apellidos: datosUsuario.apellidos,
-          direccion: datosUsuario.direccion,
-          fecha_nacimiento: datosUsuario.fecha_nacimiento,
-          ocupacion: datosUsuario.ocupacion,
-          organizacion: datosUsuario.organizacion,
-          correo: datosUsuario.correo,
-          clave: datosUsuario.clave,
-        }),
+        body: JSON.stringify({ ...datosUsuario, external: external_id }), // Incluir external_id en el cuerpo de la solicitud
       });
       const data = await response.json();
-
+  
       if (response.ok) {
-        console.log('Usuario editado correct  amente:', data);
+        console.log('Usuario editado correctamente:', data);
         handleClose();
+        mensajes(data.msg);
+        //navegation('/EditarUsuarioModal');
       } else {
         console.error('Error al editar usuario:', data);
-        setError(data.data.evento);
+        // Manejar el error en la interfaz de usuario, si es necesario
       }
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
-      setError('Error al enviar la solicitud');
+      // Manejar el error en la interfaz de usuario, si es necesario
     }
   };
+  
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -85,8 +78,8 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
             <Form.Control
               type="text"
               placeholder="Ingresa nombres"
-              name="Nombres"
-              value={datosUsuario.Nombres}
+              name="nombres"
+              value={datosUsuario.nombres}
               onChange={handleInputChange}
               required
             />
@@ -96,21 +89,9 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
             <Form.Control
               type="text"
               placeholder="Ingresa apellidos"
-              name="Apellidos"
-              value={datosUsuario.Apellidos}
+              name="apellidos"
+              value={datosUsuario.apellidos}
               onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="formIdentificacion">
-            <Form.Label>Identificación:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ingresa identificación"
-              name="Identificacion"
-              value={datosUsuario.Identificacion}
-              onChange={handleInputChange}
-              readOnly
               required
             />
           </Form.Group>
@@ -119,8 +100,19 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
             <Form.Control
               type="text"
               placeholder="Ingresa dirección"
-              name="Direccion"
-              value={datosUsuario.Direccion}
+              name="direccion"
+              value={datosUsuario.direccion}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="formFechaNacimiento">
+            <Form.Label>Fecha de Nacimiento:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Ingresa fecha de nacimiento"
+              name="fecha_nacimiento"
+              value={datosUsuario.fecha_nacimiento}
               onChange={handleInputChange}
               required
             />
@@ -130,66 +122,19 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
             <Form.Control
               type="text"
               placeholder="Ingresa teléfono"
-              name="Telefono"
-              value={datosUsuario.Telefono}
+              name="telefono"
+              value={datosUsuario.telefono}
               onChange={handleInputChange}
               required
             />
           </Form.Group>
-          <Form.Group controlId="formCorreo">
-            <Form.Label>Correo Electrónico:</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Ingresa correo electrónico"
-              name="Correo"
-              value={datosUsuario.Correo}
-              onChange={handleInputChange}
-              readOnly
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="formClave">
-            <Form.Label>Clave:</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Ingresa clave"
-              name="Clave"
-              value={datosUsuario.Clave}
-              onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="formRol">
-            <Form.Label>Rol:</Form.Label>
-            <Form.Control
-              as="select"
-              value={datosUsuario.Rol}
-              onChange={handleInputChange}
-              name="Rol"
-              required
-            >
-              <option value="">Selecciona un rol</option>
-              {roles.map((rol, index) => (
-                <option key={index} value={rol}>
-                  {rol}
-                </option>
-              ))}
-            </Form.Control>
-          </Form.Group>
+          {/* Agrega un campo oculto para el external_id */}
+          <input type="hidden" name="external_id" value={datosUsuario.external_id} />
+          
+          <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+          <Button variant="primary" type="submit">Guardar Cambios</Button>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
-        <Button variant="primary" onClick={handleSubmit}>Guardar Cambios</Button>
-      </Modal.Footer>
-      {error && (
-        <p className="text-danger mt-3">
-          {error === 'La identificación ya está registrada' ? 'La identificación ya está registrada.' :
-            error === 'El teléfono ya está registrado' ? 'El teléfono ya está registrado.' :
-              error === 'El correo ya está registrado' ? 'El correo electrónico ya está registrado.' :
-                'Ocurrió un error. Por favor, inténtalo de nuevo más tarde.'}
-        </p>
-      )}
     </Modal>
   );
 };
@@ -197,7 +142,8 @@ const EditarUsuarioModal = ({ show, handleClose, identificacion }) => {
 EditarUsuarioModal.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  identificacion: PropTypes.string.isRequired,
+  usuario: PropTypes.object.isRequired, // Asegúrate de definir usuario como objeto en las PropTypes
 };
 
 export default EditarUsuarioModal;
+
