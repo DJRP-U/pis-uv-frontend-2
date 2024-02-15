@@ -22,6 +22,9 @@ const Nav = () => {
                 <Link className="nav-link" to="/DatosHistoricos" style={{ color: 'white' }}>Datos Historicos</Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/peticiones" style={{ color: 'white' }}>Peticiones</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/persona" style={{ color: 'white' }}>Personas</Link>
               </li>
               <li className="nav-item">
