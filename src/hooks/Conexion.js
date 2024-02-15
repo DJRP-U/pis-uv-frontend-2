@@ -1,3 +1,5 @@
+import mensajes from "../utilidades/Mensajes";
+
 const URL = "http://localhost:3006/api"
 export const URLex =  URL + "/document/";
 
@@ -91,9 +93,34 @@ export const toggleCuenta = async (data) => {
         headers: cabeceras,
         body: JSON.stringify(data)
     })).json();
+
+    if (datos.code == 500) {
+        mensajes("ERROR","warning","Error del servidor")
+    }
+
+
     console.log(datos+"  "+JSON.stringify(data));
     return datos;
 }
+
+export const AprobarSolicitud = async (data) => {
+
+    var cabeceras = { 
+        "Accept": 'application/json',
+        "Content-Type": 'application/json'
+     };
+    const datos = await (await fetch(URL + "/solicitudes/aceptar", {
+        method: "POST",
+        headers: cabeceras,
+        body: JSON.stringify(data)
+    })).json();
+    console.log(datos+"  "+JSON.stringify(data));
+    if (datos.code == 500) {
+        mensajes(datos.msg,"warning","Error del servidor");
+    }
+    return datos;
+}
+
 
 export const Personas = async (key) => {
 
