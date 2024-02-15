@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { toggleCuenta } from '../hooks/Conexion';
-import AgregarUsuarioModal from './AgragarUsuarioModal';
+import RegistrarUsuario from "./RegistrarUsuario";
 import EditarUsuarioModal from './EditarUsuarioModal';
 
 import PropTypes from 'prop-types'; // Importa PropTypes
@@ -103,7 +103,7 @@ const Solicitud = () => {
                 <div className="row" style={{ marginTop: '20px' }}>
                     <div className="col-12 text-center">
                         <SolicitudTable solicitudes={searchResult.length > 0 ? searchResult : solicitudes} onEdit={handleEdit} handleToggle={handleToggle} />
-                        <AgregarUsuarioModal show={showModal && !selectedUserId} handleClose={handleCloseModal} />
+                        <RegistrarUsuario show={showModal && !selectedUserId} handleClose={handleCloseModal} />
                         {selectedUserId && <EditarUsuarioModal show={showModal} handleClose={handleCloseModal} identificacion={selectedUserId} />}
                     </div>
                 </div>

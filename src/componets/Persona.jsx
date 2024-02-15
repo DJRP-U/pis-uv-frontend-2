@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { toggleCuenta } from '../hooks/Conexion';
 import EditarUsuarioModal from './EditarUsuarioModal';
+import RegistrarUsuario from "./RegistrarUsuario";
+ // Importar el componente de modal de creación
 import PropTypes from 'prop-types';
 
 const Persona = () => {
@@ -10,6 +12,7 @@ const Persona = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchInput, setSearchInput] = useState('');
     const [searchResult, setSearchResult] = useState([]);
+    const [showCreateModal, setShowCreateModal] = useState(false); // Estado para controlar si el modal de creación de usuario está abierto o cerrado
 
     useEffect(() => {
         fetchPersonas();
@@ -33,6 +36,10 @@ const Persona = () => {
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedUser(null);
+    };
+
+    const handleCreate = () => {
+        setShowCreateModal(true); // Cambiado de showModal a showCreateModal
     };
 
     const handleSearch = async () => {
@@ -73,7 +80,7 @@ const Persona = () => {
                 </div>
                 <div className="row" style={{ marginTop: '20px' }}>
                     <div className="col-12 text-center">
-                        <Button variant="success" onClick={() => setShowModal(true)}>Crear Nuevo Usuario</Button>
+                        <Button variant="success" onClick={handleCreate}>Crear Nuevo Usuario</Button>
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: '20px' }}>
@@ -84,6 +91,8 @@ const Persona = () => {
                             <PersonaTable personas={personas} onEdit={handleEdit} />
                         )}
                         <EditarUsuarioModal show={showModal} handleClose={handleCloseModal} usuario={selectedUser} />
+                        {/* Condición para renderizar el modal de creación */}
+                        {showCreateModal && <RegistrarUsuario show={showCreateModal} handleClose={() => setShowCreateModal(false)} />}
                     </div>
                 </div>
             </div>
@@ -150,4 +159,8 @@ PersonaTable.propTypes = {
 };
 
 export default Persona;
+
+
+
+
 

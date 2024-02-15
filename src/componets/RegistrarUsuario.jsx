@@ -2,13 +2,12 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const AgregarUsuarioModal = ({ show, handleClose }) => {
+const RegistrarUsuario = ({ show, handleClose }) => {
     const [usuario, setUsuario] = useState({
         apellidos: '',
         direccion: '',
         fecha_nacimiento: '',
-        ocupacion: '',
-        organizacion: '',
+        telefono: '',
         correo: '',
         clave: ''
     });
@@ -37,8 +36,7 @@ const AgregarUsuarioModal = ({ show, handleClose }) => {
                     apellidos: usuario.apellidos,
                     direccion: usuario.direccion,
                     fecha_nacimiento: usuario.fecha_nacimiento,
-                    ocupacion: usuario.ocupacion,
-                    organizacion: usuario.organizacion,
+                    telefono: usuario.telefono,
                     correo: usuario.correo,
                     clave: usuario.clave
                 }),
@@ -112,47 +110,18 @@ const AgregarUsuarioModal = ({ show, handleClose }) => {
                             required
                         />
                     </Form.Group>
-
-
-                    <Form.Group controlId="formOcupacion">
-                        <Form.Label>Ocupación:</Form.Label>
+                    <Form.Group controlId="formTelefono">
+                        <Form.Label>Telefono:</Form.Label>
                         <Form.Control
-                            as="select"  // Utilizamos 'as="select"' para indicar que queremos un elemento select
-                            name="ocupacion"
-                            value={usuario.ocupacion}
+                            type="number"
+                            placeholder="Ingrese su telefono"
+                            name="telefono"
+                            value={usuario.telefono}
                             onChange={handleInputChange}
                             required
-                        >
-                            <option value="" disabled>Selecciona una ocupación</option>
-                            <option value="Estudiante">Estudiante</option>
-                            <option value="Desarrolllador">Desarrollador</option>
-                            <option value="Profesor">Profesor</option>
-                            <option value="Analista">Analista</option>
-                            <option value="Gerente">Gerente</option>
-                            <option value="Consultor">Consultor</option>
-                            <option value="Investigador">Investigador</option>
-                            <option value="personal-administrativo">Personal Administrativo</option>
-                            {/* Agrega más opciones según sea necesario */}
-                        </Form.Control>
+                        />
                     </Form.Group>
-                    <Form.Group controlId="formOrganizacion">
-                        <Form.Label>Organización:</Form.Label>
-                        <Form.Control
-                            as="select"  // Utilizamos 'as="select"' para indicar que queremos un elemento select
-                            name="organizacion"
-                            value={usuario.organizacion}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option value="" disabled>Selecciona una organización</option>
-                            <option value="Universidad">Universidad</option>
-                            <option value="Empresa">Empresa</option>
-                            <option value="Organización">Organización</option>
-                            <option value="Asociación">Asociación</option>
-                            <option value="Instituto de Investigación">Instituto de Investigación</option>
-                            {/* Agrega más opciones según sea necesario */}
-                        </Form.Control>
-                    </Form.Group>
+
                     <Form.Group controlId="formCorreo">
                         <Form.Label>Usuario:</Form.Label>
                         <Form.Control
@@ -196,9 +165,9 @@ const AgregarUsuarioModal = ({ show, handleClose }) => {
     );
 };
 
-AgregarUsuarioModal.propTypes = {
+RegistrarUsuario.propTypes = {
     show: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
 };
 
-export default AgregarUsuarioModal;
+export default RegistrarUsuario;
